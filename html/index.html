@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinturillo con Canvas</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <img src="../src/pintu.png" alt="">
+    </header>
+    <section class="juego">
+        <section class="puntos">
+            <h1>PUNTOS</h1>
+            <section class="jugador">
+                <p>Jugador: <span id="puntosJugador">0</span></p>
+            </section>
+            <section class="IA">
+                <p>IA: <span id="puntosIA">0</span></p>
+            </section>
+        </section>
+    
+        <section class="dibujo">
+            <section class="palabra">
+                <span>asdasdasd</span>
+            </section>
+            <div class="tools">
+                <input type="color" id="colorPicker" value="#000000">
+                <input type="range" id="brushSize" min="1" max="10" value="3">
+                <button id="clearCanvas">Limpiar</button>
+            </div>
+            <canvas id="paintCanvas"></canvas>
+        </section>
+    
+        <section class="chat">
+            <h2>Chat</h2>
+            <div class="chat-messages" id="chatMessages"></div>
+            <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+            <button id="sendChat">Enviar</button>
+        </section>
+    </section>
+
+    <script src="../js/js.js"></script>
+</body>
+</html>
