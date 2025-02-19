@@ -17,39 +17,92 @@ header {
     justify-content: space-between; 
     gap: 20px;
     padding: 20px;
-    height: 70vh;  /* Asegura que el juego ocupe el 70% de la altura de la ventana */
 }
 
 .puntos, .chat {
     flex: 1; 
     padding: 20px;
-    height: 100%;
+    height: 70vh;
     border: 1px solid #ddd;
     background-color: #ffffff;
     border-radius: 8px;
 }
 
+#clearCanvas {
+    padding: 10px 20px;
+    border: none;
+    background-color: #3b63d3;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease; /* Añadimos transición para un efecto suave */
+}
+
+#clearCanvas:hover {
+    transform: scale(1.1);
+    z-index: 1; /* Asegura que el botón quede por encima de otros elementos al aumentar de tamaño */
+}
+
+
+.pap{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap:20%;
+}
+
 .dibujo {
-    width: 30%;
     flex: 2; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 20px;
-    height: 100%;  /* Asegura que el contenedor de dibujo ocupe todo el espacio disponible */
+    height: 70vh;
     border: 1px solid #ddd;
     background-color: #ffffff;
     border-radius: 8px;
 }
-
-canvas {
-    border: 2px solid black;
-    background-color: white;
-    cursor: crosshair;
+.donde{
+    margin-top: 5%;
+    height: 60vh;
+}
+.temporizador {
+    margin-top: 2%;
+    text-align: center;
+    padding-bottom: 3%;
 }
 
+#tiempoRestante {
+    border: 3px solid; 
+    border-radius: 50%;
+    padding: 10px 20px 10px 20px;
+    font-size: 30px; 
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+}
+.contenido{
+    display: flex;
+    flex-direction: column;
+}
+
+.cosa{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+
+
+#paintCanvas {
+    border: 4px solid #000;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+
 .chat-messages {
-    max-height: 200px;
+    height: 50vh;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;
@@ -57,9 +110,18 @@ canvas {
 }
 
 input[type="text"] {
-    width: 100%;
+    width: 72%;
     padding: 10px;
     margin-top: 10px;
     border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#sendChat{
+    width: 2    0%;
+    padding: 10px;
+    color: white;
+    background-color: #3b63d3;
+    border: none;
     border-radius: 4px;
 }

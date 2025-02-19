@@ -13,24 +13,43 @@
     <section class="juego">
         <section class="puntos">
             <h1>PUNTOS</h1>
-            <section class="jugador">
-                <p>Jugador: <span id="puntosJugador">0</span></p>
+            <section class="pap">
+                <section class="jugador">
+                    <p>Jugador: <span id="puntosJugador">0</span></p>
+                </section>
+                <section class="IA">
+                    <p>IA: <span id="puntosIA">0</span></p>
+                </section>
             </section>
-            <section class="IA">
-                <p>IA: <span id="puntosIA">0</span></p>
-            </section>
+            
         </section>
     
         <section class="dibujo">
-            <section class="palabra">
-                <span>asdasdasd</span>
+            <section class="contenido">
+                <section class="temporizador">
+                    <span id="tiempoRestante">15</span>
+                </section>
+                
+                <section class="cosa">
+                    <div class="tools">
+                        <input type="color" id="colorPicker" value="#000000">
+                        <input type="range" id="brushSize" min="1" max="10" value="3">
+                        <button id="clearCanvas">Limpiar</button>
+                    </div>
+
+                    <section class="palabra">
+                        <span>PALABRA</span>
+                    </section>
+                </section>
+                
+                
+                
             </section>
-            <div class="tools">
-                <input type="color" id="colorPicker" value="#000000">
-                <input type="range" id="brushSize" min="1" max="10" value="3">
-                <button id="clearCanvas">Limpiar</button>
-            </div>
-            <canvas id="paintCanvas"></canvas>
+            
+            <section class="donde">
+                <canvas id="paintCanvas"></canvas>
+            </section>
+            
         </section>
     
         <section class="chat">
@@ -40,7 +59,7 @@
             <button id="sendChat">Enviar</button>
         </section>
     </section>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/js.js"></script>
 </body>
 </html>

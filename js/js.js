@@ -1,9 +1,13 @@
+// Obtén el canvas y su contexto 2D
+
+
+
 const canvas = document.getElementById("paintCanvas");
 const ctx = canvas.getContext("2d");
 
 // Función para ajustar el tamaño del canvas al 100% del contenedor
 function ajustarCanvas() {
-    const dibujo = document.querySelector('.dibujo');
+    const dibujo = document.querySelector('.donde');
     canvas.width = dibujo.offsetWidth;  // Establecer el ancho del canvas al del contenedor
     canvas.height = dibujo.offsetHeight; // Establecer la altura del canvas al del contenedor
 }
@@ -24,6 +28,16 @@ function getMousePos(event) {
         y: event.clientY - rect.top   // Calculamos la posición Y dentro del canvas
     };
 }
+
+// Función para obtener la posición correcta del mouse dentro del canvas
+function getMousePos(event) {
+    const rect = canvas.getBoundingClientRect(); // Obtenemos el área visible del canvas
+    return {
+        x: event.clientX - rect.left, // Calculamos la posición X dentro del canvas
+        y: event.clientY - rect.top   // Calculamos la posición Y dentro del canvas
+    };
+}
+
 
 // Iniciar el dibujo
 function startPainting(event) {
@@ -68,5 +82,68 @@ document.getElementById("brushSize").addEventListener("input", (e) => {
 
 // Limpiar el canvas
 document.getElementById("clearCanvas").addEventListener("click", () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);  // Limpia el área del canvas
+});
+
+
+
+
+
+
+
+
+
+/*LISTA DE PALABRAS POR CATEGORIA*/
+
+
+const palabrasRandom = {
+    comida: ["manzana", "pizza", "hamburguesa", "sushi", "taco", "helado", "ensalada", "pasta", "queso", "pan", "arroz", "pollo", 
+        "pescado", "fresa", "uva", "sandía", "limón", "zanahoria", "tomate", "cebolla"],
+    vehiculo: ["coche", "bicicleta", "motocicleta", "autobús", "camión", "tren", "avión", "barco", 
+        "submarino", "tractor", "patinete", "helicóptero", "tanque", "ambulancia", "taxi", "furgoneta", "yate", "moto acuática", "cohete", "triciclo"],
+    tecnologia: ["computadora", "teléfono", "tablet", "teclado", "mouse", "monitor", "impresora", "router", 
+        "cámara", "dron", "smartwatch", "auriculares", "altavoz", "batería", "cargador", "disco duro", "memoria USB", "laptop", "proyector", "consola"],
+    animales: ["perro", "gato", "elefante", "tigre", "león", "jirafa", "mono", "oso", "pájaro", "pez", 
+        "tortuga", "serpiente", "rana", "caballo", "vaca", "oveja", "cerdo", "conejo", "ardilla", "delfín"]
+};
+
+// Función para obtener una palabra aleatoria de una categoría específica
+function obtenerPalabraAleatoria(palabrasRandom, categoria) {
+    const palabras = palabrasRandom[categoria];
+    if (palabras) {
+        const indiceAleatorio = Math.floor(Math.random() * palabras.length);
+        return palabras[indiceAleatorio];
+    } else {
+        return "Categoría no encontrada";
+    }
+}
+
+
+$(document).ready(function () {
+    
+    // PARTE DE LAS PALABRAS
+    const categorias = Object.keys(palabrasRandom);
+    const categoriaAleatoria = categorias[Math.floor(Math.random() * categorias.length)];
+    console.log();
+    
+    // Seleccionar una palabra aleatoria de la categoría
+    const palabraAleatoria = obtenerPalabraAleatoria(palabrasRandom, categoriaAleatoria);
+
+    // Mostrar la palabra en la sección correspondiente
+    $(".palabra span").text(palabraAleatoria);
+    
+    //PARTE DE TEMPORIZADOR
+    
+    let tiempo = 15; 
+    
+    // Función para actualizar el temporizador cada segundo
+    let temporizador = setInterval(function() {
+        if (tiempo <= 0) {
+            clearInterval(temporizador); // Detener el temporizador cuando llegue a 0
+            alert("¡El tiempo ha terminado!");
+        } else {
+            tiempo--; // Reducir el tiempo
+            $("#tiempoRestante").text(tiempo); // Actualizar el texto del temporizador
+        }
+    }, 1000); // Actualizar cada segundo (1000ms)
 });
