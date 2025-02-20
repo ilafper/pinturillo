@@ -47,7 +47,6 @@ header {
 
 #clearCanvas:hover,.deletePAINT:hover {
     transform: scale(1.1);
-    z-index: 1; /* Asegura que el botón quede por encima de otros elementos al aumentar de tamaño */
 }
 
 
@@ -104,9 +103,9 @@ header {
     font-weight: bold;
     text-transform: uppercase;
     color: #3b63d3;              
-    letter-spacing:9px;         
+    letter-spacing: 6px;         
     background-color: #f0f4ff;  
-    padding: 10px 20px;         
+    padding: 5px 10px;         
     border-radius: 8px;          
     border: 2px solid #3b63d3;  
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
@@ -157,4 +156,90 @@ input[type="text"] {
 #sendChat:hover{
     cursor: pointer;
     transform: scale(1.05);
+}
+
+
+
+/* Estilo general para los mensajes */
+#chatMessages p {
+    font-size: 16px;
+    margin: 10px 0;
+    padding: 8px 15px;
+    border-radius: 8px;
+}
+
+/* Mensajes del jugador a la derecha */
+#chatMessages p.jugador {
+    width: 50%;  /* Ajustar el ancho según el diseño */
+    color: rgb(0, 0, 0);
+    text-align: right;  
+    margin-left: auto; 
+    margin-right: 10px;
+}
+
+/* Mensajes de la IA a la izquierda */
+#chatMessages p.ia {
+    color: rgb(0, 0, 0);
+    width: 50%;  /* Ajustar el ancho según el diseño */
+    margin-right: auto;  /* Empuja los mensajes a la izquierda */
+}
+
+/* Estilo para los nombres de los usuarios (IA y jugador) */
+#chatMessages p.ia strong {
+    font-weight: bold;
+    color: red;
+}
+
+#chatMessages p.jugador strong {
+    font-weight: bold;
+    color: blue;
+}
+
+/* Para que los mensajes se ajusten correctamente en el chat */
+
+
+/* Estilo para los mensajes del sistema (solo muestra un texto indicativo) */
+#chatMessages p.sistema {
+    width: 90%;
+    background-color: #F1F1F1;
+    color: #333;
+    text-align: center;
+    float: none;
+    margin: 5px 0;
+    font-style: italic;
+}
+
+.tools{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estilo para el contenedor circular */
+.color-picker-container {
+    display: inline-block;
+    width: 30px; /* Ancho del contenedor */
+    height: 30px; /* Altura del contenedor */
+    border-radius: 50%; /* Hace que el contenedor sea circular */
+    overflow: hidden; /* Asegura que todo lo que sobre salga se recorte */
+    background-color: #fff; /* Fondo blanco */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    cursor: pointer;
+}
+
+/* Estilo para el input de color */
+#colorPicker {
+    width: 100%; /* Se adapta al contenedor */
+    height: 100%; /* Se adapta al contenedor */
+    border: none;
+    background-color: transparent; /* Hace que el fondo del input sea transparente */
+    cursor: pointer;
+    transform: scale(2); /* Efecto de aumento al pasar el mouse */
+}
+
+
+#colorPicker:focus {
+    outline: none; /* Eliminar el borde de enfoque por defecto */
+    box-shadow: 0 0 0 3px rgba(59, 99, 211, 0.5); /* Sombra cuando está enfocado */
 }

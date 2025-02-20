@@ -112,13 +112,13 @@ function iniciarRonda() {
     // Mostrar la palabra correcta en el DOM
     $(".palabra span").text(palabraCorrecta);
 
-    tiempo = 15;
+    tiempo = 20;
     tiempoActivo = false;
     $("#tiempoRestante").text(tiempo);
 
     // La IA no comienza hasta que el jugador empiece a dibujar
     jugadorDibuja = false;  // Reiniciar el estado antes de cada ronda
-    mostrarMensaje("Sistema", "Espera a que el jugador empiece a dibujar.");
+    mostrarMensaje("Sistema", "Esperando a que el jugador dibuje.");
 }
 
 
@@ -158,7 +158,7 @@ function iniciarIA() {
 
         // Verificar si la IA adivinó la palabra correcta
         if (intento === palabraCorrecta) {
-            mostrarMensaje("IA", "¡Correcto!");
+            mostrarMensaje("Jugador", "¡Correcto!");
             clearInterval(iaInterval);
             clearInterval(temporizador);
             puntosIA++;  // La IA suma un punto solo si adivinó correctamente
@@ -166,16 +166,30 @@ function iniciarIA() {
             rondaActual++;
             iniciarRonda();  // Inicia una nueva ronda
         } else {
-            mostrarMensaje("SISTEMA", "Incorrecto");
+            mostrarMensaje("Jugador", "Incorrecto");
         }
-    }, 2000);  // La IA hace un intento cada 2 segundos
+    }, 2000);  //cada 2 seg
 }
 
 
 function mostrarMensaje(usuario, mensaje) {
-    $("#chatMessages").append(`<p><strong>${usuario}:</strong> ${mensaje}</p>`);
+    let claseUsuario = ''; 
+
+    // Determina si el mensaje es de la IA, jugador o sistema
+    if (usuario === "IA") {
+        claseUsuario = 'ia';  // Mensaje de la IA, alineado a la izquierda
+    } else if (usuario === "Sistema") {
+        claseUsuario = 'sistema';  // Mensaje del sistema, centrado
+    } else if (usuario === "Jugador") {
+        claseUsuario = 'jugador';  // Mensaje del jugador, alineado a la derecha
+    }
+
+    // Inserta el mensaje con la clase correspondiente
+    $("#chatMessages").append(`<p class="${claseUsuario}"><strong>${usuario}:</strong> ${mensaje}</p>`);
     $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
 }
+
+
 
 function finalizarJuego() {
     let resultado = "Empate";
