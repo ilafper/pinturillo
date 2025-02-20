@@ -27,7 +27,7 @@
         <section class="dibujo">
             <section class="contenido">
                 <section class="temporizador">
-                    <span id="tiempoRestante">15</span>
+                    <span id="tiempoRestante"></span>
                 </section>
                 
                 <section class="cosa">
@@ -38,7 +38,7 @@
                     </div>
 
                     <section class="palabra">
-                        <span>PALABRA</span>
+                        <span class="pRamdom"></span>
                     </section>
                 </section>
                 
@@ -49,14 +49,14 @@
             <section class="donde">
                 <canvas id="paintCanvas"></canvas>
             </section>
-            
+            <section class="delete">
+                <button class="deletePAINT">Borrar</button>
+            </section>
         </section>
     
         <section class="chat">
-            <h2>Chat</h2>
+            <h2>CHAT</h2>
             <div class="chat-messages" id="chatMessages"></div>
-            <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
-            <button id="sendChat">Enviar</button>
         </section>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

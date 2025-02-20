@@ -1,77 +1,72 @@
 // Obtén el canvas y su contexto 2D
 
-
-
 const canvas = document.getElementById("paintCanvas");
 const ctx = canvas.getContext("2d");
 
 // Función para ajustar el tamaño del canvas al 100% del contenedor
 function ajustarCanvas() {
     const dibujo = document.querySelector('.donde');
-    canvas.width = dibujo.offsetWidth;  // Establecer el ancho del canvas al del contenedor
-    canvas.height = dibujo.offsetHeight; // Establecer la altura del canvas al del contenedor
+    canvas.width = dibujo.offsetWidth;
+    canvas.height = dibujo.offsetHeight;
 }
 
-// Ajustar el tamaño del canvas cuando se carga la página y cuando se redimensiona la ventana
 window.addEventListener('resize', ajustarCanvas);
-ajustarCanvas(); // Llamar al cargar la página
+ajustarCanvas();
 
 let painting = false;
 let color = document.getElementById("colorPicker").value;
 let brushSize = document.getElementById("brushSize").value;
+let isErasing = false;
+let tiempo;
+let tiempoActivo = false;
+let temporizador;
+let rondaActual = 1;
+let puntosJugador = 0;
+let puntosIA = 0;
+let jugadorDibuja = false;  
+
 
 // Función para obtener la posición correcta del mouse dentro del canvas
 function getMousePos(event) {
-    const rect = canvas.getBoundingClientRect(); // Obtenemos el área visible del canvas
+    const rect = canvas.getBoundingClientRect();
     return {
-        x: event.clientX - rect.left, // Calculamos la posición X dentro del canvas
-        y: event.clientY - rect.top   // Calculamos la posición Y dentro del canvas
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
     };
 }
-
-// Función para obtener la posición correcta del mouse dentro del canvas
-function getMousePos(event) {
-    const rect = canvas.getBoundingClientRect(); // Obtenemos el área visible del canvas
-    return {
-        x: event.clientX - rect.left, // Calculamos la posición X dentro del canvas
-        y: event.clientY - rect.top   // Calculamos la posición Y dentro del canvas
-    };
-}
-
-
-// Iniciar el dibujo
 function startPainting(event) {
+    if (!jugadorDibuja) {
+        jugadorDibuja = true;  // El jugador empieza a dibujar
+        iniciarIA();  // Iniciar la IA después de que el jugador empieza a dibujar
+        console.log(palabraCorrecta, categoriaCorrecta);  // Verifica las palabras correctas y la categoría
+    }
     painting = true;
-    ctx.beginPath(); // Inicia una nueva línea
-    const pos = getMousePos(event);  // Obtener la posición del ratón
-    ctx.moveTo(pos.x, pos.y);       // Mover el lápiz a esa posición
+    ctx.beginPath();
+    const pos = getMousePos(event);
+    ctx.moveTo(pos.x, pos.y);
+    if (!tiempoActivo) iniciarTemporizador();
 }
 
-// Dibujar en el canvas
 function draw(event) {
     if (!painting) return;
-
     const pos = getMousePos(event);
-    ctx.lineTo(pos.x, pos.y);        // Dibujar línea a la nueva posición
-    ctx.strokeStyle = color;         // Establecer el color del trazo
-    ctx.lineWidth = brushSize;       // Establecer el tamaño del pincel
-    ctx.lineCap = "round";           // Suavizar las esquinas
-    ctx.stroke();                    // Hacer el trazo
+    ctx.lineTo(pos.x, pos.y);
+    ctx.strokeStyle = isErasing ? "#FFFFFF" : color;
+    ctx.lineWidth = brushSize;
+    ctx.lineCap = "round";
+    ctx.stroke();
 }
 
-// Detener el dibujo
 function stopPainting() {
     painting = false;
-    ctx.beginPath(); // Reiniciar el trazo
+    ctx.beginPath();
 }
 
-// Eventos del mouse
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopPainting);
 canvas.addEventListener("mouseleave", stopPainting);
 
-// Cambiar color y tamaño del pincel
 document.getElementById("colorPicker").addEventListener("change", (e) => {
     color = e.target.value;
 });
@@ -80,70 +75,116 @@ document.getElementById("brushSize").addEventListener("input", (e) => {
     brushSize = e.target.value;
 });
 
-// Limpiar el canvas
 document.getElementById("clearCanvas").addEventListener("click", () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);  // Limpia el área del canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
-
-
-
-
-
-
-
-
-/*LISTA DE PALABRAS POR CATEGORIA*/
-
+document.querySelector(".deletePAINT").addEventListener("click", () => {
+    isErasing = !isErasing;
+    const deleteBtn = document.querySelector(".deletePAINT");
+    deleteBtn.textContent = isErasing ? "Dibujar" : "Borrar";
+});
 
 const palabrasRandom = {
-    comida: ["manzana", "pizza", "hamburguesa", "sushi", "taco", "helado", "ensalada", "pasta", "queso", "pan", "arroz", "pollo", 
-        "pescado", "fresa", "uva", "sandía", "limón", "zanahoria", "tomate", "cebolla"],
-    vehiculo: ["coche", "bicicleta", "motocicleta", "autobús", "camión", "tren", "avión", "barco", 
-        "submarino", "tractor", "patinete", "helicóptero", "tanque", "ambulancia", "taxi", "furgoneta", "yate", "moto acuática", "cohete", "triciclo"],
-    tecnologia: ["computadora", "teléfono", "tablet", "teclado", "mouse", "monitor", "impresora", "router", 
-        "cámara", "dron", "smartwatch", "auriculares", "altavoz", "batería", "cargador", "disco duro", "memoria USB", "laptop", "proyector", "consola"],
-    animales: ["perro", "gato", "elefante", "tigre", "león", "jirafa", "mono", "oso", "pájaro", "pez", 
-        "tortuga", "serpiente", "rana", "caballo", "vaca", "oveja", "cerdo", "conejo", "ardilla", "delfín"]
+    comida: ["manzana", "pizza", "hamburguesa", "sushi", "taco", "helado", "ensalada", "pasta", "queso", "pan", "arroz", "pollo", "pescado", "fresa", "uva", "sandía", "limón", "zanahoria", "tomate", "cebolla"],
+    vehiculo: ["coche", "bicicleta", "motocicleta", "autobús", "camión", "tren", "avión", "barco", "submarino", "tractor", "patinete", "helicóptero", "tanque", "ambulancia", "taxi", "furgoneta", "yate", "moto acuática", "cohete", "triciclo"],
+    tecnologia: ["computadora", "teléfono", "tablet", "teclado", "mouse", "monitor", "impresora", "router", "cámara", "dron", "smartwatch", "auriculares", "altavoz", "batería", "cargador", "disco duro", "memoria USB", "laptop", "proyector", "consola"],
+    animales: ["perro", "gato", "elefante", "tigre", "león", "jirafa", "mono", "oso", "pájaro", "pez", "tortuga", "serpiente", "rana", "caballo", "vaca", "oveja", "cerdo", "conejo", "ardilla", "delfín"]
 };
 
-// Función para obtener una palabra aleatoria de una categoría específica
 function obtenerPalabraAleatoria(palabrasRandom, categoria) {
     const palabras = palabrasRandom[categoria];
-    if (palabras) {
-        const indiceAleatorio = Math.floor(Math.random() * palabras.length);
-        return palabras[indiceAleatorio];
-    } else {
-        return "Categoría no encontrada";
-    }
+    return palabras ? palabras[Math.floor(Math.random() * palabras.length)] : "Categoría no encontrada";
 }
 
 
-$(document).ready(function () {
-    
-    // PARTE DE LAS PALABRAS
-    const categorias = Object.keys(palabrasRandom);
-    const categoriaAleatoria = categorias[Math.floor(Math.random() * categorias.length)];
-    console.log();
-    
-    // Seleccionar una palabra aleatoria de la categoría
-    const palabraAleatoria = obtenerPalabraAleatoria(palabrasRandom, categoriaAleatoria);
+let palabraCorrecta; 
+let categoriaCorrecta;  
 
-    // Mostrar la palabra en la sección correspondiente
-    $(".palabra span").text(palabraAleatoria);
+function iniciarRonda() {
+    if (rondaActual > 5) return finalizarJuego();
+
+    const categorias = Object.keys(palabrasRandom);
+    categoriaCorrecta = categorias[Math.floor(Math.random() * categorias.length)];
+    palabraCorrecta = obtenerPalabraAleatoria(palabrasRandom, categoriaCorrecta);
+    console.log(categoriaCorrecta, palabraCorrecta);
     
-    //PARTE DE TEMPORIZADOR
-    
-    let tiempo = 15; 
-    
-    // Función para actualizar el temporizador cada segundo
-    let temporizador = setInterval(function() {
+    // Mostrar la palabra correcta en el DOM
+    $(".palabra span").text(palabraCorrecta);
+
+    tiempo = 15;
+    tiempoActivo = false;
+    $("#tiempoRestante").text(tiempo);
+
+    // La IA no comienza hasta que el jugador empiece a dibujar
+    jugadorDibuja = false;  // Reiniciar el estado antes de cada ronda
+    mostrarMensaje("Sistema", "Espera a que el jugador empiece a dibujar.");
+}
+
+
+function iniciarTemporizador() {
+    tiempoActivo = true;
+    temporizador = setInterval(function() {
         if (tiempo <= 0) {
-            clearInterval(temporizador); // Detener el temporizador cuando llegue a 0
-            alert("¡El tiempo ha terminado!");
+            clearInterval(temporizador);
+            puntosJugador++;
+            $("#puntosJugador").text(puntosJugador);
+            rondaActual++;
+            iniciarRonda();
         } else {
-            tiempo--; // Reducir el tiempo
-            $("#tiempoRestante").text(tiempo); // Actualizar el texto del temporizador
+            tiempo--;
+            $("#tiempoRestante").text(tiempo);
         }
-    }, 1000); // Actualizar cada segundo (1000ms)
+    }, 1000);
+}
+
+function iniciarIA() {
+    if (!jugadorDibuja) {
+        mostrarMensaje("Sistema", "Esperando hasta que el jugador empiece a dibujar...");
+        return;  // No se inicia la IA hasta que el jugador dibuje
+    }
+
+    const intentos = palabrasRandom[categoriaCorrecta].slice(); // Solo intenta palabras de la categoría correcta
+
+    const iaInterval = setInterval(function() {
+        if (tiempo <= 0) {
+            clearInterval(iaInterval);
+            return;
+        }
+
+        // La IA elige una palabra aleatoria de la categoría correcta
+        const intento = intentos.splice(Math.floor(Math.random() * intentos.length), 1)[0]; 
+        mostrarMensaje("IA", intento);
+
+        // Verificar si la IA adivinó la palabra correcta
+        if (intento === palabraCorrecta) {
+            mostrarMensaje("IA", "¡Correcto!");
+            clearInterval(iaInterval);
+            clearInterval(temporizador);
+            puntosIA++;  // La IA suma un punto solo si adivinó correctamente
+            $("#puntosIA").text(puntosIA);
+            rondaActual++;
+            iniciarRonda();  // Inicia una nueva ronda
+        } else {
+            mostrarMensaje("SISTEMA", "Incorrecto");
+        }
+    }, 2000);  // La IA hace un intento cada 2 segundos
+}
+
+
+function mostrarMensaje(usuario, mensaje) {
+    $("#chatMessages").append(`<p><strong>${usuario}:</strong> ${mensaje}</p>`);
+    $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+}
+
+function finalizarJuego() {
+    let resultado = "Empate";
+    if (puntosJugador > puntosIA) resultado = "¡Ganaste!";
+    else if (puntosIA > puntosJugador) resultado = "La IA ganó";
+
+    alert(`Juego terminado. ${resultado}`);
+}
+
+$(document).ready(function () {
+    iniciarRonda();
 });
