@@ -12,7 +12,7 @@ function ajustarCanvas() {
 
 window.addEventListener('resize', ajustarCanvas);
 ajustarCanvas();
-
+/*vaiables*/
 let painting = false;
 let color = document.getElementById("colorPicker").value;
 let brushSize = document.getElementById("brushSize").value;
